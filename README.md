@@ -2,6 +2,16 @@
 
 `data` フォルダ内のMicrosoft Word文書（`.docx` ファイル）に半自動で脚注を一括設定する。
 
+## 動作環境
+
+プロジェクトマネージャー [uv](https://docs.astral.sh/uv/) を使用。
+インストールコマンドは下記。
+
+```bash
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+
 ## 使い方
 
 ### 手順1 `data` に処理対象のファイルをコピーする
