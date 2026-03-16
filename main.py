@@ -26,9 +26,7 @@ def apply_footnotes(docx_path: Path) -> None:
 
     footnote_mapping = load_csv(csv_path)
 
-    output_path = str(
-        docx_path.with_name(f"{docx_path.stem}{FINISHED_FILE_SUFFIX}.docx")
-    )
+    output_path = docx_path.with_name(f"{docx_path.stem}{FINISHED_FILE_SUFFIX}.docx")
 
     # Wordアプリケーションを起動
     word = win32com.client.Dispatch("Word.Application")
@@ -63,9 +61,10 @@ def apply_footnotes(docx_path: Path) -> None:
             footnote.Range.Text = footnote_text
 
         # 別名で保存
-        doc.SaveAs2(output_path)
-        print(f"処理完了: {output_path}")
-        print(f"追加した脚注数: {doc.Footnotes.Count}")
+        doc.SaveAs2(str(output_path))
+
+        print(f"==> 処理完了: {output_path.name}")
+        print(f"==> 追加した脚注数: {doc.Footnotes.Count}")
 
         doc.Close()
 
