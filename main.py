@@ -45,7 +45,7 @@ def apply_footnotes(docx_path: Path) -> None:
         find.MatchWildcards = True
 
         # マーカーを検索して脚注を追加
-        while find.Execute(FindText="【[0-9]{1,}】", Forward=True):
+        while find.Execute(FindText="【【[0-9]{1,}】】", Forward=True):
             # 数字部分
             key = str(rng.Text).replace("【", "").replace("】", "")
             # マーカーを削除
