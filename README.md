@@ -37,7 +37,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 ![img](./image/05.png)
 
-### 手順3 `run.dat` をダブルクリックする
+### 手順3 `run.bat` をダブルクリックする
 
 元の文書と同じフォルダに `_脚注付` という名前で新規作成される。
 
