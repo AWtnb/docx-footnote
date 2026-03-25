@@ -39,7 +39,15 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 ### 手順3 `run.bat` をダブルクリックする
 
-元の文書と同じフォルダに `_脚注付` という名前で新規作成される。
-
 ![img](./image/06.png)
+
+黒い画面が開いて処理が始まり、最後まで行くと `OWARI MASHITA! (press any key to close)` と表示されるので何かキーを押すと画面が閉じて終了する。
+
+![img](./image/07.png)
+
+最終的に、元の文書と同じフォルダに `_脚注付` という名前で新規作成される。
+
+
+![img](./image/08.png)
+
 
