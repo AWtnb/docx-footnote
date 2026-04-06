@@ -26,30 +26,31 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 ![img](./image/03.png)
 
 
-### 手順2 脚注の対応表CSVを作成する
+### 手順2 脚注の対応表 Excel を作成する
 
-1列目が注番号、2列目が注内容のCSVを作成し、 **`docx`ファイルと同じ名前で保存する**。
+先頭シートの1列目が注番号、2列目が注内容の Excel を作成し、 **`docx`ファイルと同じ名前で保存する**。
 
 ![img](./image/04.png)
-
-上図のようにMicrosoft Excelで作成した場合、保存時に `CSV UTF-8 (コンマ区切り)` を選択する。
 
 ![img](./image/05.png)
 
 
+### 手順3 開いている Word と Excel を閉じる
+
+プログラムの実行時に Office アプリが開いていると固まることがあるため。
+
+
+### 手順4 `run.bat` をダブルクリックする
+
 ![img](./image/06.png)
 
-### 手順3 `run.bat` をダブルクリックする
+黒い画面が開いて処理が始まり、問題なく終了した場合は `処理が完了しました！` と表示されるので何かキーを押すと画面が閉じて終了する。
 
 ![img](./image/07.png)
-
-黒い画面が開いて処理が始まり、最後まで行くと `OWARI MASHITA! (press any key to close)` と表示されるので何かキーを押すと画面が閉じて終了する。
-
-![img](./image/08.png)
 
 最終的に、元の文書と同じフォルダに `_脚注付` という名前で新規作成される。
 
 
-![img](./image/09.png)
+![img](./image/08.png)
 
 
