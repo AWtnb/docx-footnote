@@ -1,4 +1,3 @@
-import csv
 from pathlib import Path
 
 import win32com.client
@@ -6,25 +5,50 @@ import win32com.client
 FINISHED_FILE_SUFFIX = "_脚注付"
 
 
-def load_csv(csv_path: Path) -> dict[str, str]:
-    d = {}
-    with open(csv_path, encoding="utf-8") as f:
-        reader = csv.reader(f)
-        for line in reader:
-            row = [s.strip() for s in line]
-            d[row[0]] = row[1]
-    return d
+def load_excel(excel_path: Path) -> dict[str, str]:
+    """
+    Excelファイルから脚注マッピングを読み込む
+    1列目: 脚注番号、2列目: 脚注テキスト
+    """
+    excel = win32com.client.Dispatch("Excel.Application")
+    excel.Visible = False
+
+    try:
+        workbook = excel.Workbooks.Open(str(excel_path), ReadOnly=True)
+        sheet = workbook.Worksheets(1)  # 最初のシートを使用
+
+        # 使用範囲を取得
+        used_range = sheet.UsedRange
+        rows = used_range.Rows.Count
+
+        d = {}
+        for i in range(1, rows + 1):
+            key = sheet.Cells(i, 1).Value
+            value = sheet.Cells(i, 2).Value
+
+            if key is not None and value is not None:
+                # 文字列化して前後の空白を削除
+                d[str(int(key)).strip()] = str(value).strip()
+
+        workbook.Close(SaveChanges=False)
+        return d
+
+    finally:
+        excel.Quit()
 
 
 def apply_footnotes(docx_path: Path) -> None:
-    csv_path = c.with_suffix(".csv")
-    if not csv_path.exists():
-        print(
-            f"{c.name}の脚注定義ファイル {csv_path.name} がありません。スキップします。"
-        )
-        return
+    excel_path = docx_path.with_suffix(".xlsx")
+    if not excel_path.exists():
+        # .xlsxが無ければ.xlsも試す
+        excel_path = docx_path.with_suffix(".xls")
+        if not excel_path.exists():
+            print(
+                f"{docx_path.name}の脚注定義ファイル {excel_path.name} がありません。スキップします。"
+            )
+            return
 
-    footnote_mapping = load_csv(csv_path)
+    footnote_mapping = load_excel(excel_path)
 
     output_path = docx_path.with_name(f"{docx_path.stem}{FINISHED_FILE_SUFFIX}.docx")
 
@@ -56,7 +80,7 @@ def apply_footnotes(docx_path: Path) -> None:
             footnote_text = footnote_mapping.get(key, None)
             if footnote_text is None:
                 raise KeyError(
-                    f"脚注番号 {key} に対応する脚注がCSV内に記載されていません。"
+                    f"脚注番号 {key} に対応する脚注がExcel内に記載されていません。"
                 )
             footnote.Range.Text = footnote_text
 
@@ -78,9 +102,9 @@ def apply_footnotes(docx_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    data_ditr = Path(__file__).parent / "data"
+    data_dir = Path(__file__).parent / "data"
 
-    for c in data_ditr.iterdir():
+    for c in data_dir.iterdir():
         if c.is_dir():
             continue
         if c.name.startswith("~$"):
@@ -88,3 +112,5 @@ if __name__ == "__main__":
         if c.suffix == ".docx" and not c.stem.endswith(FINISHED_FILE_SUFFIX):
             print(f"処理中：{c.name}")
             apply_footnotes(c)
+
+    input("\n\n処理が完了しました！\n何かキーを押すと終了します")
